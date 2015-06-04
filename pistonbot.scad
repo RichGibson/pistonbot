@@ -82,12 +82,12 @@ module eccentric() {
     translate([0,0,-.126]) color("red") thing(0.65);
 }
 
-module axel() {
+module axels() {
     translate([0.45,0.120,-9]) cylinder(h=18,r=.15);
     translate([1.25,4.375,-9]) cylinder(h=18,r=.15);
     //side supports
-    %translate( [-3,-8,-9.250] ) cube([6,13,0.25]);
-    %translate( [-3,-8,9.0] ) cube([6,13,0.25]);
+    %translate( [-3,-8,-9.250] ) cube([11.5,14,0.25]);
+    %translate( [-3,-8,9.0] ) cube([11.5,14,0.25]);
 }
 
 use <linkage.scad>;
@@ -113,7 +113,8 @@ use <piston.scad>;
 
 module whole_enchilada() {
     rotate([0,-90,0]) {
-    axel();
+    //sides are part of the axel
+    axels();
     full =1;
     
     eccentric_and_straight_link(0,0,2);
@@ -131,7 +132,10 @@ module whole_enchilada() {
         }
     }
     translate([-9.25, -8, -2]) loaded_shelf();
-    translate([-9.25, -2, 9]) all_pistons();    
+    //this is all_pistons connected to the straight link
+    //translate([-9.25, -2, 9]) all_pistons();    
+    //this is all_pistons connected to the four way linkage
+    translate([-9.25, -.75, 12]) color("red") all_pistons();    
 }
 
 scale([25.4,25.4,25.4]) rotate( [0,0,360*$t] ) {whole_enchilada(); }

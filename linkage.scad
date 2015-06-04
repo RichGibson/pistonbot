@@ -2,6 +2,52 @@ link=3;
 
 brake_lever_double_hole = 0;
 
+straight_link_with_bell();
+
+//translate([0,4.5,0]) { four_bar_linkage(); }
+//////////////////////////////////////////////////////////////////////////////
+module four_bar_linkage() {
+    // a four bar linkage
+    rotate([0,0,0]) {
+        
+        // top left/top parallel link
+        eccentric_link(4);
+        // right hand/lower link
+        difference() {
+            translate([3.5,-1.5,0]) eccentric_link(4);
+            translate([2,0.25,-.20]) rotate([0,0,90]) cylinder(r=.08,h=.4);
+        }
+
+            //translate([2,0.25,-.20]) rotate([0,0,90]) cylinder(r=.08,h=.4);
+        // the linkage, the middle of which, stays parallel
+        difference() {
+            translate([3.5,.5,0]) rotate([0,0,-90]) eccentric_link(2);
+            %translate([2,0.25,-.20]) rotate([0,0,90]) cylinder(r=.08,h=.4);
+        }
+        //link from straight link to parallel linkage
+        translate([1.75,0.5,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
+        
+        //the piston rod/linkage - not used here
+        *color("red") {
+            difference() {
+                // this is a normal link
+                translate([4,-.5,-.1250]) rotate([0,0,90]) eccentric_link(5);
+                
+                // this is a rod...
+                //rotate([-90,0,0])  translate([3.75,.1250,-.50]) rotate([0,0,90]) cylinder(r=.125,h=5);
+               
+                translate([3.75,-.5,-.2]) rotate([0,0,90]) cylinder(r=.08,h=.4);
+            }
+         }
+     }
+    // fixed pivot points
+     // top left
+     translate([.25,.25,-2])cylinder(r=.08, h=6);
+     // lower right   
+     translate([7.25,-1.25,-2])cylinder(r=.08, h=6);
+     
+        
+}
 module eccentric_link(reach) {
     union() {
             
@@ -49,6 +95,7 @@ module straight_link_with_bell() {
     straight_link();
     translate( [6,-2.5,0]) bell_crank();
     translate( [3.5,0,0]) bell_link();
+    translate([0,4.5,0]) { four_bar_linkage(); }
 
     //translate( [-50,0,-60] )
     //    rotate([90,270,0]) 
@@ -57,7 +104,7 @@ module straight_link_with_bell() {
 }
 
 use <obiscad/obiscad/attach.scad>
-straight_link_with_bell();
+//straight_link_with_bell();
 
 //rotate([180,0,0]) translate([11.5,1.45,-25.4]) clevis();
 //rotate( [90,0,0]) scale([25.4,25.4,25.4])  straight_link();
