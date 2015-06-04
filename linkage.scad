@@ -1,27 +1,35 @@
 link=3;
-
+use <piston.scad>;
 brake_lever_double_hole = 0;
 
-//straight_link_with_bell();
-animated_four_bar_linkage();
+straight_link_with_bell();
+//animated_four_bar_linkage();
 //translate([0,4.5,0]) { four_bar_linkage(); }
 //////////////////////////////////////////////////////////////////////////////
-range=40;
+range=50;
+    // take $t from 0..1, range=45 by default, map 0-.5 as 0-45, map .5..1 as 45-0
+
+function step_angle(t,a) = (a*t)-22.5;
+
 module animated_four_bar_linkage() {
     // a four bar linkage
     rotate([0,0,0]) {
         
         // top left/top parallel link
-        rotate( [0,0,(45*$t)-22.5]) eccentric_link(4);
-        translate([-0,0,0]) %circle(r=4);
-        //echo((45*$t)-22.5);
-        //echo( cos(45*$t-22.5));
+        sa=step_angle($t,range);
+        rotate( [0,0,sa]) eccentric_link(4);
+        //rotate( [0,0,(45*$t)-22.5]) eccentric_link(4);
+        // lower right parallel link
+        translate([7.5,-3,0]) rotate( [0,0,-sa]) mirror() eccentric_link(4);
         
-        translate([7.5,-3,0]) rotate( [0,0,(-45*$t)+22.5]) mirror() eccentric_link(4);
-        translate([7.5,-3,0]) %circle(r=4);
+        // the circles...
+        show_circles = 0;
+        if (show_circles==1) {
+        translate([-0,0,0]) %cylinder(r=4,h=.1);       
+        translate([7.5,-3,0]) %cylinder(r=4,h=.1);
+        }
         
-        
-        // right hand/lower link
+
         
         //I have a center point, and an angle.
         // so what is the position? 
@@ -32,15 +40,21 @@ module animated_four_bar_linkage() {
         x1=cos((range*$t)-22.5)*3.5;
         y1=sin((range*$t)-22.5)*3.5+.5;
         
-        x2=cos((-range*$t)+22.5)*3.5 + 0;
-        y2=sin((range*$t)+22.5)*3.5-5;
+        //x2=cos((-range*$t)+22.5)*3.5 + 0;
+        //y2=sin((range*$t)+22.5)*3.5-5;
         
         x2=cos((range*-$t)+22.5+180)*4 + 7.25;
         y2=sin((range*-$t)+22.5+180)*4-3.5;
         
+        //x3/y3 is for the link to the straight link
+        x3=cos((range*$t)-22.5)*(3.5/2);
+        y3=sin((range*$t)-22.5)*((3.5+.5)/2)+.5;
+        
         dx = x2 - x1;
         dy = y2 - y1;
         angle = -(atan2(dx,dy)-90);
+        
+
         //echo(angle);
        
         //for (i=[0:.1:1]) {
@@ -52,8 +66,17 @@ module animated_four_bar_linkage() {
              //color("yellow") translate([x1,y1,0]) circle(r=.1);
              //color("blue") translate([x2,y2,0]) circle(r=.1);
         //} 
-        
+ 
+        // the 'driving link' in the parallel linkage    
         color("blue") translate([x1, y1, 0]) { rotate( [0,0,angle]) eccentric_link(3); }
+        //now where is the middle of the driving link?
+        //I think at dx2, dy2? but this is not quite working
+        dx2 = (x2 + x1)/2;
+        dy2 = (y2 + y1)/2;
+        angle2 = -(atan2(dx2,dy2)-90);
+        translate([dx2+.25,dy2+.5,0]) cylinder(r=.1,h=1);
+        
+        
         //the first link is starting in the right place. So how do I calculate 
         //the position of x2,y2? And then calculate a rotation based on that?
         //ie. draw a link between (x1,y1) and (x2, y2)?
@@ -66,13 +89,18 @@ module animated_four_bar_linkage() {
             *%translate([2,0.25,-.20]) rotate([0,0,90]) cylinder(r=.08,h=.4);
         }
         //link from straight link to parallel linkage
-        *translate([1.75,0.5,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
+        //translate([1.75,0.5,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
+        translate([x3,y3,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
+        //translate([dx2,dy2,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
         
-        //the piston rod/linkage - not used here
+        
+        //the piston rod
+        
+        translate([dx2+.25, dy2+6.5,-.125]) rotate([-90,90,0]) color("red")piston();
         *color("red") {
             difference() {
                 // this is a normal link
-                translate([4,-.5,-.1250]) rotate([0,0,90]) eccentric_link(5);
+                translate([dx2+.5,dy2+.5,-.250]) rotate([0,0,90]) eccentric_link(5);
                 
                 // this is a rod...
                 //rotate([-90,0,0])  translate([3.75,.1250,-.50]) rotate([0,0,90]) cylinder(r=.125,h=5);
@@ -131,7 +159,7 @@ module four_bar_linkage() {
      
         
 }
-module eccentric_link(reach) {
+module eccentric_link(reach,x3,y3) {
     union() {
             
         translate([.125,0,0]) cube( [reach-.25, 0.5, 0.125]);
@@ -144,7 +172,7 @@ module eccentric_link(reach) {
     translate( [0.25,.25,-.0630] ) cylinder(r=0.12, h=.25);
 }
 
-use <parts/clevis.csg>;
+//use <parts/clevis.csg>;
 // the clevis...
 module bell_crank() {
     difference() {
@@ -178,7 +206,8 @@ module straight_link_with_bell() {
     straight_link();
     translate( [6,-2.5,0]) bell_crank();
     translate( [3.5,0,0]) bell_link();
-    translate([0,4.5,0]) { four_bar_linkage(); }
+    //translate([0,4.5,0]) { four_bar_linkage(); }
+    translate([0,4.5,0]) { animated_four_bar_linkage(); }
 
     //translate( [-50,0,-60] )
     //    rotate([90,270,0]) 
@@ -186,7 +215,7 @@ module straight_link_with_bell() {
 
 }
 
-use <obiscad/obiscad/attach.scad>
+//use <obiscad/obiscad/attach.scad>
 //straight_link_with_bell();
 
 //rotate([180,0,0]) translate([11.5,1.45,-25.4]) clevis();

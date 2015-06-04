@@ -9,9 +9,9 @@ module thing(hole)
     *countersink([0,0,.025]);
 
     *plate([-plate_x/2, -plate_y/2,0]);
+    difference() {
     *countersink_all();
 
-    difference() {
         plate([-plate_x/2, -plate_y/2,0]);
         countersink_all();
         #big_hole(hole);
@@ -103,8 +103,8 @@ module eccentric_and_straight_link(x,y,z) {
     // link from eccentric to straight link
     rotate( [0,0,26] )
         translate([x+.23,y-.35,z+.26]) eccentric_link(4);
-    translate([x+3.4,y-2,z+.15+.125]) rotate([180,0,90]) //straight_link();
-    straight_link_with_bell();
+    translate([x+3.4,y-2,z+.15+.125]) rotate([180,0,90]) straight_link_with_bell();
+    
     //translate([x+4,y-2,z]) rotate([180,0,90]) curved_link(1);
 }
 
@@ -135,10 +135,12 @@ module whole_enchilada() {
     //this is all_pistons connected to the straight link
     //translate([-9.25, -2, 9]) all_pistons();    
     //this is all_pistons connected to the four way linkage
-    translate([-9.25, -.75, 12]) color("red") all_pistons();    
+    translate([-9.5, -.8250, 11.85]) color("white") all_pistons();    
 }
 
-scale([25.4,25.4,25.4]) rotate( [0,0,360*$t] ) {whole_enchilada(); }
+//scale([25.4,25.4,25.4]) rotate( [0,0,360*$t] ) {whole_enchilada(); }
+scale([25.4,25.4,25.4]) rotate( [0,0,360] ) {whole_enchilada(); }
+
 
 //scale([25.4,25.4,25.4]) rotate( [0,180*$t,0] ) {whole_enchilada(); }
 

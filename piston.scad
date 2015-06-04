@@ -2,7 +2,7 @@
 piston_dia = 1.5;
 piston_cnt = 4;
 piston_height=.5;
-cylinder_height=3;
+cylinder_height=3.25;
 
 bottle_width = 4;
 bottle_cnt = 4;
@@ -58,7 +58,7 @@ module all_pistons() {
         first_offset = bottle_width/2+bottle_padding;
         translate( [i* (bottle_width+bottle_padding) + bottle_width/2 + bottle_padding,    bottle_width/2+bottle_padding, 0]) %piston_cylinder();
         
-        translate( [i* (bottle_width+bottle_padding) + bottle_width/2 + bottle_padding,    bottle_width/2+bottle_padding, cylinder_height/2]) piston();
+        *translate( [i* (bottle_width+bottle_padding) + bottle_width/2 + bottle_padding,    bottle_width/2+bottle_padding, cylinder_height/2]) piston();
     }
     // bottom cylinder plate
     translate( [ 0, 1.5, 0]) cube( [ shelf_length, 2, .25]);
