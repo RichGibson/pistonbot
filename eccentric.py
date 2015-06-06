@@ -19,10 +19,11 @@ def eccentric_design():
     s = -60
     e = 0
     rad = .75
+    h=.125
     myarc = difference()(
-            arc(rad=rad, start_degrees=s, end_degrees=e),
-            arc(rad=rad-.125, start_degrees=s, end_degrees=e),
-        )
+        arc(rad=rad, start_degrees=s, end_degrees=e),
+        arc(rad=rad-.125, start_degrees=s, end_degrees=e),
+    )
     a = union() (
         translate([0,0,0])( myarc,),
         translate([rad*2-.125,0,0])( mirror([90,0,0])( myarc ),),
@@ -35,13 +36,27 @@ def eccentric_design():
 
 @bom_part("Eccentric Plate Center")
 def eccentric_plate_center(hole_diameter=2.5):
+    #points = [ [0,0,0], [1.25,1.25,0], [1.25,1.75,0], [1.75, 1.75, 0], [1.75,1.25,0], [3,0,0]] 
     a = union() (
-        #translate([0,eccentric_plate_y,0])(cube([1,1,.125])),
 
-        
+       
+        translate([eccentric_plate_x/2-.25, eccentric_plate_y+eccentric_plate_x/2-.125, 0])(cube([.5,.75, .125]) ()),
         difference()(
-            eccentric_plate(hole_diameter),
-            translate([eccentric_plate_x/2-.75, eccentric_plate_y/2]) (eccentric_design()),
+            union() (
+                translate([eccentric_plate_x/2, eccentric_plate_y, 0])(cylinder( r=eccentric_plate_x/2, h=.125) ()),
+                difference()(
+                    eccentric_plate(hole_diameter),
+                    translate([eccentric_plate_x/2, eccentric_plate_y/2, 0])(cylinder( r=eccentric_plate_x/2, h=.125) ()),
+                ),
+                #eccentric_plate(hole_diameter),
+                #the top cylinder
+                translate([eccentric_plate_x/2, eccentric_plate_y, 0])(cylinder( r=eccentric_plate_x/2, h=.125) ()),
+                #translate( [ 0, eccentric_plate_y, 0 ] ) (
+                #    translate([-5,0,0])(polygon( points )()),
+                #),
+    
+            ),
+            translate([eccentric_plate_x/2-.75+.125, eccentric_plate_y]) (eccentric_design()),
         )
 
 
