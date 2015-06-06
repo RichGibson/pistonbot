@@ -1,15 +1,32 @@
 link=3;
 use <piston.scad>;
 brake_lever_double_hole = 0;
-
-straight_link_with_bell();
-//animated_four_bar_linkage();
+//straight_link();
+//straight_link_with_bell();
+animated_four_bar_linkage();
 //translate([0,4.5,0]) { four_bar_linkage(); }
 //////////////////////////////////////////////////////////////////////////////
 range=50;
     // take $t from 0..1, range=45 by default, map 0-.5 as 0-45, map .5..1 as 45-0
 
-function step_angle(t,a) = (a*t)-22.5;
+
+
+const_angle=range/2;
+function step_angle(t,a) = (a*t)-const_angle;
+// this step angle code works to get the levers to go up and down slowly, but 
+// I am not positive how to extend it to the other linkages :-/
+function step_angleFOO(t,a) = lookup(t, [
+    [ .1, (a*t*2)-const_angle ],
+    [ .2, (a*t*2)-const_angle ],
+    [ .3, (a*t*2)-const_angle ],
+    [ .4, (a*t*2)-const_angle],
+    [ .5, a-(a*t*2)-const_angle ],
+    [ .6, a-(a*t*2)-const_angle ],
+    [ .7, a-(a*t*2)-const_angle ],
+    [ .8, a-(a*t*2)-const_angle ],
+    [ .9, a-(a*t*2)-const_angle ],
+    [ 1, a-(a*t*2)-const_angle ],
+    ]);
 
 module animated_four_bar_linkage() {
     // a four bar linkage
@@ -23,7 +40,7 @@ module animated_four_bar_linkage() {
         translate([7.5,-3,0]) rotate( [0,0,-sa]) mirror() eccentric_link(4);
         
         // the circles...
-        show_circles = 0;
+        show_circles = 1;
         if (show_circles==1) {
         translate([-0,0,0]) %cylinder(r=4,h=.1);       
         translate([7.5,-3,0]) %cylinder(r=4,h=.1);
@@ -90,7 +107,7 @@ module animated_four_bar_linkage() {
         }
         //link from straight link to parallel linkage
         //translate([1.75,0.5,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
-        translate([x3,y3,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
+        translate([x3,y3,-.1250]) rotate([0,0,-90]) eccentric_link(6.25);
         //translate([dx2,dy2,-.1250]) rotate([0,0,-90]) eccentric_link(4.25);
         
         
