@@ -1,0 +1,222 @@
+Sat Mar  5 00:41:35 PST 2016
+
+Wish/task list
+-really could use ice!
+
+-dispensors-syringes, steppers, frame, esthetics
+-electronics for dispensors - arduino(s), stepper drivers, limit switches
+--big issue: code that talks bartendro protocol...
+-nice to have: 3 color LED's matching bartendro dispensor.
+-server - Raspberry pi
+-server software - bartendro ui code
+
+-Server side: 'games' do something to earn your drink.
+
+what is options.turbo_mode to the console? index line 39
+
+Overview:
+
+-use bartendro web ui. Extend it, and give back, with 'entertaining' 
+features.
+-adapt, if needed, bartendro firmware, 
+Next Things.
+
+-software: I think I can clone x, y, z to u, v, w, x, y, z for six, 
+or more, stpper motor control...so 'C-Gode' (Cocktail code)
+G0 U1 V1 W1 X1 Y1 Z1
+or
+G1 U1 V2 W3 X2 Y1 Z1
+Would dispense them all to finish at the same time...
+
+Or...
+G0 U nn
+where nn = quantity in milliliters. Sure...turns per milliliter is 
+logical.
+
+Or just restart the paradigm at 'A.'
+
+G1 A30 B15 C15
+Would be a white russian if...
+A = Vodka
+B = Kahlua
+C = Cream
+
+In a 2:1:1 ratio
+
+Or maybe adapt the existing bartendro code...
+
+
+
+Need 1/8" tubing at some point.
+-1/8" Y fittings are ordered. 
+
+Luer Lock Fittings are awesome.
+
+Figuring out modular units of 60 cc and 20 cc syringes, and steppers.
+3 steppers fit in a 2" x 6" piece of Aluminum Bar. And 3 20 cc syringes
+work fine.
+
+But 60 ml syringes don't quiet fit.
+
+Maybe make 3" x 6" bar for 2 60ml syringes, with matching stepper mounts.
+
+2 1/2" bar would probably work. But nothing will work perfectly...something
+gets compromised.
+
+The existing 2" x 6" 3 stepper and 3 20 ml syringe mounts look like they 
+will work perfectly. Yay.
+
+But they are tight when using the stop cocks...so maybe more breathing
+room is good for everying.
+
+Put the existing parts into a something, but make 3" wide parts moving 
+forward? Or 2" and 3" but with 2 syringes rather than 3?
+
+
+Thu Feb 25 16:20:51 PST 2016
+
+The new pistonbot...
+
+Wow, meeting Robert the helicopter pilot is all the win!
+
+Luer Lock syringes and tubing and fittings!
+
+Stop cocks, with a servo to flip them? instead of 
+check valves, or Solenoid valves?
+
+
+http://www.thepulsar.be/article/adding-an-actuated-flow-selector-valve-to-our-syringe-pump/
+
+
+Summary of the world...
+
+Tasks...
+-figure out frame which holds one stepper, the makerbeam to plunger,
+the plunger guides, and the syringe.
+
+-motor mount
+-motor to all thread coupler
+-partial tap of gridbeam
+-clearance drill the rest of the gridbeam
+-syringe plunger to gridbeam coupling
+-gridbeam alignment rollers/bearings - three of them
+-possible plate for the alignment rollers to connect to the vertical
+-hold plunger to frame - 'broom' holder? and slot to hold the top in place?
+or L brackets with a cut out - see sketches
+-Check valves or stop cocks? if stop cocks need to fit servos.
+(I have stop cocks and check valves coming)
+-tubing...I probably need to figure out my size, I hope it is 1/8"
+and get some...
+
+Which size syringe? probably bigger...
+
+Electronics:
+one arduino and stepper board give me control of five stepper valves. 
+
+Display? Thinking probably a tablet. And a web interface.
+
+lights...magic shifters on special arms?
+Sound/music.  Almost mandatory to have sound.
+
+think about using bartendro code. Why not?
+
+....
+Bartendro related thoughts.
+At what level do I want to make my hardware act like a bartendro?
+
+-I could make syringe units to emulate bartendro dispensors.
+pro: all other bartendro code would work without change
+con: sort of a PITA
+
+
+
+
+
+look at cable car controls
+
+....
+Bartendro code notes
+/wa/pistonbot/bartendro/ui
+
+export BARTENDRO_SOFTWARE_ONLY=1
+python ./bartendro_server.py
+
+For admin
+http://127.0.0.1:8080/admin
+
+current error
+AttributeError: 'bool' object has no attribute '__call__'
+Which appears to be that 'Flask-Login 
+changed current_user.is_authenticated() to be a property'  
+(rather than a method)
+Changed is_authenticated() to is_authenticated
+Why did Flask do this fuckery? 
+
+bartendro/boozemeup
+
+bartendro.db - it is an sqlite3 database. So, nifty.
+
+------------------------------------------------------------------------
+Stepper 
+Black 1a
+Green 1b
+
+Blue 2b
+Red 2a
+
+With potentiometer on bottom:
+Blue
+Red
+Blck
+Green
+
+Some motors are better than others. Whoops.
+
+about 2.7" = full 20cc
+1.35" for 10cc
+
+1/4-20 lead screw. 
+turns per cc?
+20turns/1inch * 1.35 inches / 10 cc
+
+2.7 turns per cc?2
+
+now ~7 seconds for 15 cc of the smaller syringe 
+It is moving about 1.9" in 7 seconds.
+That would be closer to 27 cc with the larger syringe.
+So...the better part of 30 seconds for a large drink if the 
+dispensing is serial.
+
+But we can probable have paerallel dispensing.
+yes...it looks like parallel works.
+
+To speed up:
+-different lead screws? This is 1/4-20. 
+
+'All screw mechanisms have a critical velocity — the rotational velocity limit of the screw after which vibrations develop due to the shaft’s natural harmonic frequency. This is also commonly called “screw whip"
+http://machinedesign.com/motion-control/choosing-best-lead-screw-linear-motion-application
+
+------------------------------------------------------------------------
+Working with bartendro software
+Generates a bug on Pour Drink - 'make_drink not defined'
+http://127.0.0.1:8080/drink/25/go
+
+To add a new page
+-add the view to  __init__.py
+# Import views
+from bartendro.view import root, trending, explore
+
+-copy a page from bartendro/ui/bartendro/view
+to cargo cult it...edit that page.
+
+-change the @app.route('/explore')
+
+
+....
+This calls avrdude.
+program_and_test_dispenser.py
+------------------------------------------------------------------------
+
+My first pull request was accepted...now what do I do next? 
+-clean up 'Explore Booze' and try and put in a pull request for it.
+

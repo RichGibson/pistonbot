@@ -220,11 +220,12 @@ module bell_linkOLD() {
 //translate([0,3,0]) bell_link();
 module straight_link_with_bell() {
     //rotate( [90,0,0]) scale([0,0,0])  straight_link();
-    straight_link();
+    translate([4,0,0])
+    mirror([180,0,0]) rotate([0,0,$t*45-20]) straight_link();
     translate( [6,-2.5,0]) bell_crank();
     translate( [3.5,0,0]) bell_link();
     //translate([0,4.5,0]) { four_bar_linkage(); }
-    translate([0,4.5,0]) { animated_four_bar_linkage(); }
+    translate([0,7.5,0]) { animated_four_bar_linkage(); }
 
     //translate( [-50,0,-60] )
     //    rotate([90,270,0]) 

@@ -71,15 +71,18 @@ $fa=.1;
 $fs=.1;
 //$fn=100;
 module eccentric() {
-    translate([0,0,.126]) color("red") thing(0.65);
-    translate( [0,0,0] ) color("blue") thing(0.75);
-
+    
     // the disk with the axel hole
-    difference() {
+    translate( [$t,-$t,0] )  rotate([0,0,$t*360+180]) difference() {
         color("green") disk(0.745);
         color("white") chamfer( [0.45,0.120] );
     }
-    translate([0,0,-.126]) color("red") thing(0.65);
+    //'thing' is the eccentrics. And they should be animated based on $t*360
+    // y = sin($t*360)*.75?
+    y=sin($t*360)*75;
+    translate([$t,-$t,.126]) color("red") thing(0.65);
+    translate( [$t,-$t,0] ) color("blue") thing(0.75);
+    translate([$t,-$t-.126]) color("red") thing(0.65);
 }
 
 module axels() {
@@ -95,15 +98,19 @@ use <linkage.scad>;
 
 
 module eccentric_and_straight_link(x,y,z) {
-    rotate([0,0,45]) translate([x,y,z]) eccentric();
+    rotate([0,0,45]) translate([x,y,z])  eccentric();
+    // the eccentric doesn't rotate...the disk does.
+    //rotate([0,0,45]) translate([x,y,z]) rotate([0,0,$t*360]) eccentric();
     
     // 'zero' movement link from axel to straight link
-    translate([x+.8,y-.25,z+.0]) eccentric_link(3);
+    //translate( [-$t,$t,0] ) 
+    translate([x+.2,y-.10,z-.150]) eccentric_link(6);
     
     // link from eccentric to straight link
-    rotate( [0,0,26] )
-        translate([x+.23,y-.35,z+.26]) eccentric_link(4);
-    translate([x+3.4,y-2,z+.15+.125]) rotate([180,0,90]) straight_link_with_bell();
+    rotate( [0,0,12] )
+        translate([x+.23+$t,y+$t,z+.26]) eccentric_link(7.5);
+    
+    translate([x+6.5,y-2,z+.15+.125]) rotate([180,0,90]) straight_link_with_bell();
     
     //translate([x+4,y-2,z]) rotate([180,0,90]) curved_link(1);
 }
@@ -115,7 +122,7 @@ module whole_enchilada() {
     rotate([0,-90,0]) {
     //sides are part of the axel
     axels();
-    full =1;
+    full =0;
     
     eccentric_and_straight_link(0,0,2);
     if (full == 1) {
@@ -131,11 +138,11 @@ module whole_enchilada() {
     
         }
     }
-    translate([-9.25, -8, -2]) loaded_shelf();
+    translate([-11.25, -8, -2]) loaded_shelf();
     //this is all_pistons connected to the straight link
     //translate([-9.25, -2, 9]) all_pistons();    
     //this is all_pistons connected to the four way linkage
-    translate([-9.5, -.8250, 11.85]) color("white") all_pistons();    
+    translate([-9.5, -.8250, 14.85]) color("white") all_pistons();    
 }
 
 //scale([25.4,25.4,25.4]) rotate( [0,0,360*$t] ) {whole_enchilada(); }

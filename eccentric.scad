@@ -1,3 +1,159 @@
+$fn = 48;
+
+difference(){
+	union() {
+		translate(v = [0, 0, 1.1250000000]) {
+			union() {
+				translate(v = [1.2500000000, 4.3750000000, 0]) {
+					cube(size = [0.5000000000, 0.7500000000, 0.1250000000]);
+				}
+				difference() {
+					union() {
+						translate(v = [1.5000000000, 3, 0]) {
+							cylinder(h = 0.1250000000, r = 1.5000000000);
+						}
+						union() {
+							difference() {
+								translate(v = []) {
+									cube(size = [3, 3, 0.1250000000]);
+								}
+							}
+							translate(v = [0.2000000000, 0.2000000000, 0]) {
+							}
+							translate(v = [2.8000000000, 0.2000000000, 0]) {
+							}
+							translate(v = [0.2000000000, 2.8000000000, 0]) {
+							}
+							translate(v = [2.8000000000, 2.8000000000, 0]) {
+							}
+						}
+						translate(v = [1.5000000000, 3, 0]) {
+							cylinder(h = 0.1250000000, r = 1.5000000000);
+						}
+					}
+					translate(v = [0.8125000000, 4]) {
+						union() {
+							translate(v = [0, 0, 0]) {
+								difference() {
+									difference() {
+										circle(r = 0.7500000000);
+										rotate(a = -60) {
+											translate(v = [0, -0.7500000000, 0]) {
+												square(center = true, size = [2.2500000000, 1.5000000000]);
+											}
+										}
+										rotate(a = -180) {
+											translate(v = [0, -0.7500000000, 0]) {
+												square(center = true, size = [2.2500000000, 1.5000000000]);
+											}
+										}
+									}
+									difference() {
+										circle(r = 0.6250000000);
+										rotate(a = -60) {
+											translate(v = [0, -0.6250000000, 0]) {
+												square(center = true, size = [1.8750000000, 1.2500000000]);
+											}
+										}
+										rotate(a = -180) {
+											translate(v = [0, -0.6250000000, 0]) {
+												square(center = true, size = [1.8750000000, 1.2500000000]);
+											}
+										}
+									}
+								}
+							}
+							translate(v = [1.3750000000, 0, 0]) {
+								mirror(v = [90, 0, 0]) {
+									difference() {
+										difference() {
+											circle(r = 0.7500000000);
+											rotate(a = -60) {
+												translate(v = [0, -0.7500000000, 0]) {
+													square(center = true, size = [2.2500000000, 1.5000000000]);
+												}
+											}
+											rotate(a = -180) {
+												translate(v = [0, -0.7500000000, 0]) {
+													square(center = true, size = [2.2500000000, 1.5000000000]);
+												}
+											}
+										}
+										difference() {
+											circle(r = 0.6250000000);
+											rotate(a = -60) {
+												translate(v = [0, -0.6250000000, 0]) {
+													square(center = true, size = [1.8750000000, 1.2500000000]);
+												}
+											}
+											rotate(a = -180) {
+												translate(v = [0, -0.6250000000, 0]) {
+													square(center = true, size = [1.8750000000, 1.2500000000]);
+												}
+											}
+										}
+									}
+								}
+							}
+							translate(v = [0.6250000000, 0, -0.1000000000]) {
+								cube(size = [0.1250000000, 0.4000000000, 0.2260000000]);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	/* Holes Below*/
+	union(){
+		translate(v = [0, 0, 1.1250000000]){
+			union(){
+				difference(){
+					union(){
+						union(){
+							translate(v = [0.2000000000, 0.2000000000, 0]){
+								union() {
+									cylinder(h = 0.1875000000, r = 0.0560000000);
+									translate(v = [0, 0, 0.1875000000]) {
+										cylinder(h = 0.1000000000, r = 0.1250000000);
+									}
+								}
+							}
+							translate(v = [2.8000000000, 0.2000000000, 0]){
+								union() {
+									cylinder(h = 0.1875000000, r = 0.0560000000);
+									translate(v = [0, 0, 0.1875000000]) {
+										cylinder(h = 0.1000000000, r = 0.1250000000);
+									}
+								}
+							}
+							translate(v = [0.2000000000, 2.8000000000, 0]){
+								union() {
+									cylinder(h = 0.1875000000, r = 0.0560000000);
+									translate(v = [0, 0, 0.1875000000]) {
+										cylinder(h = 0.1000000000, r = 0.1250000000);
+									}
+								}
+							}
+							translate(v = [2.8000000000, 2.8000000000, 0]){
+								union() {
+									cylinder(h = 0.1875000000, r = 0.0560000000);
+									translate(v = [0, 0, 0.1875000000]) {
+										cylinder(h = 0.1000000000, r = 0.1250000000);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	} /* End Holes */ 
+}
+/***********************************************
+*********      SolidPython code:      **********
+************************************************
+ 
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 from __future__ import division
@@ -141,3 +297,6 @@ if __name__ == '__main__':
 
 
 
+ 
+ 
+************************************************/
