@@ -1,4 +1,4 @@
-$fn=50;
+//$fn=50;
 //Automat is a German construction kit, many pieces, but it is based on 1/2" square tubing
 //with 0.162" mm holes at 1/2" centers
 
@@ -6,25 +6,52 @@ $fn=50;
 //where t=.5
 
 //oddly the parts are all SAE measures, but the nuts are metric
-
+// #20 drill bit - the Automat kit size, for plate mounting.
+no_20_radius = .161/2;
 t=.5;    // material size, .5 = 1/2"
 h=.163;  // hole diameter
 wall=0.05; // material wall - set to 0 for solid material. 
 
+plate_height=.080;
+module pyramid_brace() {
+    difference() {
+        cube([5*t,3*t,plate_height]);
+        holes(5,1);
+        translate([3*t,0,-t/2]) rotate([0,0,90]) holes(3,1);
+        translate([0,0,-.0001]) linear_extrude( height=plate_height+.0002 ) polygon(points = [ [0,t], [2*t,3*t],[2*t,3*t+.0001], [-.0001,3*t], [0,t] ]); 
+        translate([0,0,-.0001]) linear_extrude( height=plate_height+.0002 ) polygon(points = [ [3*t,3*t+.0001], [5*t+.0001,3*t+.0001], [5*t+.0001,t],[3*t,3*t] ]); 
+    }
+}
+
+module automat_block() {
+    // the 1-t block with screw holes on all sides
+    difference(){
+        cube([t,t,t]);
+        translate([t/2,t/2,-.001]) cylinder(h=t+.002,r=no_20_radius);
+        translate([t/2,t+.001,t/2]) rotate([90,0,0])  cylinder(h=t+.002,r=no_20_radius);
+        translate([-0.001,t/2,t/2]) rotate([0,90,0])  cylinder(h=t+.002,r=no_20_radius);
+
+        //rotate([90,0,90]) translate([t/2,t/2,-.0010]) cylinder(h=t+.0002,r=no_20_radius);
+
+    }
+}
 
 
-module holes(cnt) {
+module holes(cnt, flat) {
     // make cnt holes, using the automat constants
-
-    end=cnt/t-(t/2);
+    echo("holes cnt: ", cnt);
+    end=cnt*t-(t/2);
+    echo("holes end: ", end);
     for (i= [t/2:t:end]) {
-        translate([i,t/2,0]) {
-            cylinder(h=t, r=h/2);    
+        translate([i,t/2,-0.001]) {
+            cylinder(h=t+.002, r=h/2);    
         }
     }
-    for (i= [t/2:t:end]) {
-        translate([i,t,t/2]) {
-            rotate([90,0,0]) cylinder(h=t, r=h/2);
+    if (flat != 1) {
+        for (i= [t/2:t:end]) {
+            translate([i,t+0.001,t/2]) {
+                rotate([90,0,0]) cylinder(h=t+.002, r=h/2);
+            }
         }
     }
 }
