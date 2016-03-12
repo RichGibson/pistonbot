@@ -220,3 +220,41 @@ program_and_test_dispenser.py
 My first pull request was accepted...now what do I do next? 
 -clean up 'Explore Booze' and try and put in a pull request for it.
 
+A query to remember
+all_boozes = DrinkBooze.query.filter_by(booze_id=booze_id)
+------------------------------------------------------------------------
+
+ui/bartendro/router/driver.py - is where the 'talk to robot' magic
+appears to happen.
+
+mixer.py is the 'important' code?
+class Mixer(object):
+'''The mixer object is the heart of Bartendro. This is where the state of the bot
+is managed, checked if drinks can be made, and actually make drinks. Everything
+else in Bartendro lives for *this* *code*. :) '''
+
+------------------------------------------------------------------------
+Fri Mar 11 00:04:21 PST 2016
+
+Status: happy progress.
+Looks like I can reliably move the stepper at 1 step per 0.75 milliseconds.
+750 microseconds.
+
+If I change lead screws to 10 turns per inch then I am ...
+
+2.7 revolutions per per ml at 20 turns per inch
+1.35 at 10 tpi
+
+I was getting 7 seconds for 15ml on the small pump. (for just dispensing)
+a 10 tpi lead screw, and faster motor should rock.
+
+------------------------------------------------------------------------
+Working on a feature...save_as_new_58
+
+Theory: change the drink name. If the name is different this is a new
+drink.
+
+This 'works' but the new drink only includes the ingredients from
+the new drink...none of the old drink's ingredients.
+
+

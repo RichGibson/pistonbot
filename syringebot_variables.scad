@@ -1,6 +1,6 @@
 // these are in inches, that sucks, but whatever. Adjust them or something.
-plate_length=12;
-big_hole_cnt = 4; // how many syringes or steppers
+plate_length=3;
+big_hole_cnt = 1; // how many syringes or steppers
 plate_width=3;
 plate_height=1/8;
 

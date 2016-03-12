@@ -74,20 +74,32 @@ module syringe_30() {
         union() {
             // the main body of the syringe
             cylinder(r=(21/2), h=96);
+           
             // reduction cone
             translate( [0,0,-3.75]) cylinder(r2=(21/2), r1=9.3/2, h=3.75);
+            
             // leur connector
             translate( [0,0,-13]) cylinder( r=9.3/2, h=9.25);
             // tip
-            translate( [0,0,-15.25]) cylinder( r=4/2, h=2.25);
+            translate( [0,0,-15.25]) cylinder( r=4/2, h=9.25);
             
-            // top of the body of the syringe
+            // top of the body of the syringe-the flange where your fingers go
             translate( [-39/2, -25/2,  96]) linear_extrude( height=2.5 ) polygon( points = [ [0,5.25], [0,19.75], [ 20, 25], [40, 19.75], [40, 5.25], [20,0], [0,5.25] ]);
-
+            
+           
         }
-        // the difference is not working. Not sure why...maybe it doesn't matter for now.
-        cylinder(r=(19/2), height=98.5);
-     }   
+        // Remove these things make the syringe hollow
+            translate([0,0,3]) cylinder(r=(18/2), h=100);
+            
+            // leur connector tip - the tip is now see through. But the leur connector is not 
+            // perfect...if you care this is part of where to start for the connector
+            //translate( [0,0,-13.2]) cylinder( r=7.6/2, h=9.25);
+
+            //tip this hollows out the tip
+            translate( [0,0,-15.6]) cylinder( r=1.5, h=26);
+        
+    
+    }   
     
     //translate( [-25/2, -39/2, 110]) polyhedron( points = [ [0,5.25,0], [0,19.75,0], [ 20, 25, 0], [40, 19.75,0], [40, 5.25, 0], [20,0,0], [0,5.25,0]] );
     
@@ -120,11 +132,14 @@ module plunger() {
     }
 }
 
-$fa=.5;
-$fs=.5;
+//$fa=.5;
+//$fs=.5;
 
 syringe_30();
+// rotate([90,-90,90]) translate([100+80*$t,0,0]) plunger();
 
-rotate([90,-90,90]) translate([100+80*$t,0,0]) plunger();
+// translate([0,0,-.1]) cylinder(r=(18/2), h=96);
+//translate([22,0,-.1]) cylinder(r=(18/2), h=96);
+
 
 //loaded_shelf();
